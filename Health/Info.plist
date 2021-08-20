@@ -62,5 +62,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSHealthClinicalHealthRecordsShareUsageDescription</key>
+	<string>This application needs your permission to access health data</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>This application needs your permission to access health data</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>This application needs your permission to access health data</string>
 </dict>
 </plist>

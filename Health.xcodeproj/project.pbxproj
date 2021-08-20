@@ -12,7 +12,15 @@
 		8E153FEE26CFACD5001DB0DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E153FED26CFACD5001DB0DC /* ViewController.swift */; };
 		8E153FF126CFACD5001DB0DC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E153FEF26CFACD5001DB0DC /* Main.storyboard */; };
 		8E153FF326CFACDE001DB0DC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E153FF226CFACDE001DB0DC /* Assets.xcassets */; };
-		8E153FF626CFACDE001DB0DC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E153FF426CFACDE001DB0DC /* LaunchScreen.storyboard */; };
+		8E153FFF26CFAD81001DB0DC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E153FFE26CFAD81001DB0DC /* User.swift */; };
+		8E15400226CFADA8001DB0DC /* HealthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E15400126CFADA8001DB0DC /* HealthData.swift */; };
+		8E15400926CFADDA001DB0DC /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E15400526CFADDA001DB0DC /* UIApplication+Extension.swift */; };
+		8E15400A26CFADDA001DB0DC /* HealthKitSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E15400626CFADDA001DB0DC /* HealthKitSupport.swift */; };
+		8E15400B26CFADDA001DB0DC /* HealthKitSupport+Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E15400726CFADDA001DB0DC /* HealthKitSupport+Strings.swift */; };
+		8E15400C26CFADDA001DB0DC /* CareKitSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E15400826CFADDA001DB0DC /* CareKitSupport.swift */; };
+		8E15401526CFB1FB001DB0DC /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E15401426CFB1FB001DB0DC /* HealthKit.framework */; };
+		8E15401826CFB288001DB0DC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E153FF426CFACDE001DB0DC /* LaunchScreen.storyboard */; };
+		8E15401C26CFD055001DB0DC /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 8E15401B26CFD055001DB0DC /* Localizable.stringsdict */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +32,15 @@
 		8E153FF226CFACDE001DB0DC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8E153FF526CFACDE001DB0DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8E153FF726CFACDE001DB0DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8E153FFE26CFAD81001DB0DC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		8E15400126CFADA8001DB0DC /* HealthData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthData.swift; sourceTree = "<group>"; };
+		8E15400526CFADDA001DB0DC /* UIApplication+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
+		8E15400626CFADDA001DB0DC /* HealthKitSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitSupport.swift; sourceTree = "<group>"; };
+		8E15400726CFADDA001DB0DC /* HealthKitSupport+Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HealthKitSupport+Strings.swift"; sourceTree = "<group>"; };
+		8E15400826CFADDA001DB0DC /* CareKitSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CareKitSupport.swift; sourceTree = "<group>"; };
+		8E15401226CFB1FB001DB0DC /* Health.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Health.entitlements; sourceTree = "<group>"; };
+		8E15401426CFB1FB001DB0DC /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		8E15401B26CFD055001DB0DC /* Localizable.stringsdict */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = Localizable.stringsdict; path = Health/Localizable.stringsdict; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +48,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E15401526CFB1FB001DB0DC /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,8 +58,10 @@
 		8E153FDD26CFACD5001DB0DC = {
 			isa = PBXGroup;
 			children = (
+				8E15401B26CFD055001DB0DC /* Localizable.stringsdict */,
 				8E153FE826CFACD5001DB0DC /* Health */,
 				8E153FE726CFACD5001DB0DC /* Products */,
+				8E15401326CFB1FB001DB0DC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,15 +76,54 @@
 		8E153FE826CFACD5001DB0DC /* Health */ = {
 			isa = PBXGroup;
 			children = (
+				8E15401226CFB1FB001DB0DC /* Health.entitlements */,
+				8E15400F26CFB0C8001DB0DC /* Objects */,
+				8E15400E26CFB0A1001DB0DC /* ViewControllers */,
+				8E15400426CFADDA001DB0DC /* Utilities */,
 				8E153FE926CFACD5001DB0DC /* AppDelegate.swift */,
 				8E153FEB26CFACD5001DB0DC /* SceneDelegate.swift */,
-				8E153FED26CFACD5001DB0DC /* ViewController.swift */,
 				8E153FEF26CFACD5001DB0DC /* Main.storyboard */,
 				8E153FF226CFACDE001DB0DC /* Assets.xcassets */,
 				8E153FF426CFACDE001DB0DC /* LaunchScreen.storyboard */,
 				8E153FF726CFACDE001DB0DC /* Info.plist */,
 			);
 			path = Health;
+			sourceTree = "<group>";
+		};
+		8E15400426CFADDA001DB0DC /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				8E15400526CFADDA001DB0DC /* UIApplication+Extension.swift */,
+				8E15400626CFADDA001DB0DC /* HealthKitSupport.swift */,
+				8E15400726CFADDA001DB0DC /* HealthKitSupport+Strings.swift */,
+				8E15400826CFADDA001DB0DC /* CareKitSupport.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		8E15400E26CFB0A1001DB0DC /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				8E153FED26CFACD5001DB0DC /* ViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		8E15400F26CFB0C8001DB0DC /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				8E15400126CFADA8001DB0DC /* HealthData.swift */,
+				8E153FFE26CFAD81001DB0DC /* User.swift */,
+			);
+			path = Objects;
+			sourceTree = "<group>";
+		};
+		8E15401326CFB1FB001DB0DC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8E15401426CFB1FB001DB0DC /* HealthKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -124,7 +183,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8E153FF626CFACDE001DB0DC /* LaunchScreen.storyboard in Resources */,
+				8E15401826CFB288001DB0DC /* LaunchScreen.storyboard in Resources */,
+				8E15401C26CFD055001DB0DC /* Localizable.stringsdict in Resources */,
 				8E153FF326CFACDE001DB0DC /* Assets.xcassets in Resources */,
 				8E153FF126CFACD5001DB0DC /* Main.storyboard in Resources */,
 			);
@@ -137,9 +197,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E153FFF26CFAD81001DB0DC /* User.swift in Sources */,
+				8E15400B26CFADDA001DB0DC /* HealthKitSupport+Strings.swift in Sources */,
+				8E15400226CFADA8001DB0DC /* HealthData.swift in Sources */,
 				8E153FEE26CFACD5001DB0DC /* ViewController.swift in Sources */,
 				8E153FEA26CFACD5001DB0DC /* AppDelegate.swift in Sources */,
+				8E15400A26CFADDA001DB0DC /* HealthKitSupport.swift in Sources */,
+				8E15400926CFADDA001DB0DC /* UIApplication+Extension.swift in Sources */,
 				8E153FEC26CFACD5001DB0DC /* SceneDelegate.swift in Sources */,
+				8E15400C26CFADDA001DB0DC /* CareKitSupport.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,6 +352,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Health/Health.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3XXX623Z3V;
 				INFOPLIST_FILE = Health/Info.plist;
@@ -305,6 +372,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Health/Health.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3XXX623Z3V;
 				INFOPLIST_FILE = Health/Info.plist;
