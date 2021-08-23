@@ -43,6 +43,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        authorizeHealthKitinApp()
        
       
     }
@@ -238,9 +239,9 @@ class ViewController: UIViewController {
                 if let result = results?.last as? HKQuantitySample {
                     DispatchQueue.main.async {
                         weight = "\(result.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo)))"
-                  
+                        self.weightLabel.text = weight
                         let ages = (age ?? nil)!
-                     
+                        self.ageLabel.text = "\(ages)"
                     }
                 }
             }
