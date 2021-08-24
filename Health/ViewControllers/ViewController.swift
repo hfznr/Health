@@ -40,6 +40,7 @@ class ViewController: UIViewController {
     
     let healthKitStore: HKHealthStore = HKHealthStore()
     let bodyMassType = HKSampleType.quantityType(forIdentifier: .bodyMass)!
+    let heightType = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.height)!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -229,6 +230,8 @@ class ViewController: UIViewController {
     func readProfile(){
         var age:Int?
         var weight : String = ""
+        var height : String = ""
+        var gender : String = ""
         
         do{
             let birthday = try healthKitStore.dateOfBirthComponents()
@@ -239,22 +242,78 @@ class ViewController: UIViewController {
                 if let result = results?.last as? HKQuantitySample {
                     DispatchQueue.main.async {
                         weight = "\(result.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo)))"
-                        self.weightLabel.text = weight
+                        if self.weightLabel != nil{
+                            self.weightLabel.text = weight
+                        }
                         let ages = (age ?? nil)!
                         self.ageLabel.text = "\(ages)"
                     }
                 }
             }
-            
-           
             healthKitStore.execute(query)
         }
         catch{
             
         }
         
-         
+        do {
+            let biologicalSex = try healthKitStore.biologicalSex()
+            switch biologicalSex.biologicalSex.rawValue{
+                case 1:gender = "female"
+                case 2:gender = "male"
+                case 3:gender = "other"
+            default:
+                gender =  ""
+                
+            }
+            
+          /*  let query = HKSampleQuery(sampleType: heightType, predicate: nil, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, results, error) in
+                if let result = results?.last as? HKQuantitySample{
+                    print("Height => \(result.quantity)")
+                    DispatchQueue.main.async {
+                        height = "\(result.quantity.doubleValue(for: HKUnit.meter()))"
+                        if self.heightLabel != nil{
+                            self.heightLabel.text = height
+                        }
+                    }
+                }else{
+                    print("OOPS didnt get height \nResults => \(results), error => \(error)")
+                }
+            }*/
+            
+            let query = HKSampleQuery(sampleType: heightType, predicate: nil, limit: 1, sortDescriptors: nil) { (query, results, error) in
+                if let result = results?.first as? HKQuantitySample{
+                    print("Height => \(result.quantity)")
+                }else{
+                    print("OOPS didnt get height \nResults => \(results), error => \(error)")
+                }
+            }
+            self.healthKitStore.execute(query)
+  
+            DispatchQueue.main.async {
+                if self.sexLabel != nil{
+                    self.sexLabel.text = gender
+                }
+                if self.bloodLable != nil{
+                    self.bloodLable.text = ""
+                }
+                
+                
+                
+                
+            }
+            
+            
+
+        }
+        catch{
+            
+        }
+
     }
+    
+    
+    
     private func presentHealthDataNotAvailableError() {
         let title = "Health Data Unavailable"
         let message = "Aw, shucks! We are unable to access health data on this device. Make sure you are using device with HealthKit capabilities."
