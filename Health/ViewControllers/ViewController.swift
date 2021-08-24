@@ -22,7 +22,7 @@ class ViewController: UIViewController {
     
     
     var hasRequestedHealthData: Bool = false
-    @IBOutlet weak var sexLabel: UILabel!
+    @IBOutlet weak var sexLabel: UILabel?
     @IBOutlet weak var ageLabel: UILabel!
     @IBOutlet weak var bloodLable: UILabel!
     @IBOutlet weak var weightLabel: UILabel!
@@ -139,7 +139,7 @@ class ViewController: UIViewController {
         }
         
         do {
-            let biologicalSex = try healthKitStore.biologicalSex()
+            let biologicalSex = try healthKitStore.biologicalSex() // try ?
             switch biologicalSex.biologicalSex.rawValue{
             case 1:gender = "female"
             case 2:gender = "male"
@@ -147,8 +147,8 @@ class ViewController: UIViewController {
             default:
                 gender =  ""
             }
-            
-            let query = HKSampleQuery(sampleType: heightType, predicate: nil, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, results, error) in
+            // tek fonk indirge(generic fonk)
+            let query = HKSampleQuery(sampleType: heightType, predicate: nil, limit: 5, sortDescriptors: nil) { (query, results, error) in
                 if let result = results?.last as? HKQuantitySample{
                     
                     print("Height => \(result.quantity)")
@@ -163,9 +163,10 @@ class ViewController: UIViewController {
             }
             self.healthKitStore.execute(query)
             DispatchQueue.main.async {
-                if self.sexLabel != nil{
-                    self.sexLabel.text = gender
-                }
+                self.sexLabel?.text = gender
+//                if self.sexLabel != nil{
+//                    self.sexLabel.text = gender
+//                }
                 
             }
             
