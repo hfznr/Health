@@ -9,7 +9,7 @@ import UIKit
 import HealthKit
 
 class ViewController: UIViewController {
-
+    
     
     let healthStore = HealthData.healthStore
     
@@ -17,7 +17,7 @@ class ViewController: UIViewController {
     let readTypes = Set(HealthData.readDataTypes)
     /// The HealthKit data types we will request to share and have write access.
     let shareTypes = Set(HealthData.shareDataTypes)
-
+    
     @IBOutlet weak var descriptionLabel: UILabel!
     
     
@@ -27,15 +27,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var bloodLable: UILabel!
     @IBOutlet weak var weightLabel: UILabel!
     @IBOutlet weak var heightLabel: UILabel!
-    let user = User()
+  
     
     @IBOutlet weak var weightTextField: UITextField!
     @IBOutlet weak var heightTextField: UITextField!
-    
 
-    
-    
-    
+    let user = User()
     let healthKitStore: HKHealthStore = HKHealthStore()
     let bodyMassType = HKSampleType.quantityType(forIdentifier: .bodyMass)!
     let heightType = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.height)!
@@ -43,19 +40,149 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         authorizeHealthKitinApp()
-       
-      
+        
+        
     }
     @IBAction func saveButtonClicked(_ sender: Any) {
         writeToKit()
     }
-    @IBAction func setDataClicked(_ sender: UIButton) {
+
+    @IBAction func updateButtonClicked(_ sender: UIButton) {
+        self.readProfile()
+    }
+
+    func authorizeHealthKitinApp(){
+        let healhKitTypesToRead : Set <HKObjectType> = [HKObjectType.characteristicType(forIdentifier: HKCharacteristicTypeIdentifier.biologicalSex)!,HKObjectType.characteristicType(forIdentifier: HKCharacteristicTypeIdentifier.dateOfBirth)!,
+                                                        HKObjectType.characteristicType(forIdentifier: HKCharacteristicTypeIdentifier.bloodType)!,
+                                                        HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!,
+                                                        HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.height)!,]
+        let healthKitTypesToWrite : Set <HKSampleType> = [
+            HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!,HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.height)!]
+        
+        if !HKHealthStore.isHealthDataAvailable(){
+            print("Error occured")
+            authorizeHealthKitinApp()
+            return
+        }
+        healthKitStore.requestAuthorization(toShare: healthKitTypesToWrite, read: healhKitTypesToRead) { (success,error) in
+            if let error = error {
+                print("requestAuthorization error:", error.localizedDescription)
+                self.authorizeHealthKitinApp()
+            }
+            
+            if success {
+                print("HealthKit authorization request was successful!")
+                self.readProfile()
+            } else {
+                print("HealthKit authorization was not successful.")
+            }
+            
+        }
+        let authorizationStatusMass = healthStore.authorizationStatus(for: HKSampleType.quantityType(forIdentifier: .bodyMass)!)
+        if authorizationStatusMass == .notDetermined {
+            weightLabel.isHidden = true
+        } else if authorizationStatusMass == .sharingDenied {
+            print( "Meditations doesn't have access to your bodymass data. You can enable access in the Settings application.")
+        }
+        let authorizationStatusHeight = healthStore.authorizationStatus(for: HKSampleType.quantityType(forIdentifier: .height)!)
+        if authorizationStatusHeight == .notDetermined {
+            weightLabel.isHidden = true
+        } else if authorizationStatusHeight == .sharingDenied {
+            print( "Meditations doesn't have access to your Height data. You can enable access in the Settings application.")
+        }
+   
+    }
+    
+
+    func readProfile(){
+        var age:Int?
+        var weight : String = ""
+        var height : String = ""
+        var gender : String = ""
+        var blood : String = ""
+        
+        do{
+            let birthday = try healthKitStore.dateOfBirthComponents()
+            let calendar = Calendar.current
+            let currentyear = calendar.component(.year, from: Date())
+            age = currentyear-birthday.year!
+            let query = HKSampleQuery(sampleType: bodyMassType, predicate: nil, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, results, error) in
+                if let result = results?.last as? HKQuantitySample {
+                    DispatchQueue.main.async {
+                        weight = "\(result.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo)))"
+                        if self.weightLabel != nil{
+                            self.weightLabel.text = weight
+                        }
+                        
+                    }
+                }
+            }
+            healthKitStore.execute(query)
+        }
+        catch{}
+        
+        do {
+            let biologicalSex = try healthKitStore.biologicalSex()
+            switch biologicalSex.biologicalSex.rawValue{
+            case 1:gender = "female"
+            case 2:gender = "male"
+            case 3:gender = "other"
+            default:
+                gender =  ""
+            }
+            
+            let query = HKSampleQuery(sampleType: heightType, predicate: nil, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, results, error) in
+                if let result = results?.last as? HKQuantitySample{
+                    
+                    print("Height => \(result.quantity)")
+                    DispatchQueue.main.async {
+                        if(self.heightLabel != nil){
+                            self.heightLabel.text = " \(result.quantity)"
+                        }
+                    }
+                }else{
+                    print("OOPS didnt get height \nResults => \(results), error => \(error)")
+                }
+            }
+            self.healthKitStore.execute(query)
+            DispatchQueue.main.async {
+                if self.sexLabel != nil{
+                    self.sexLabel.text = gender
+                }
+                let ages = "\((age ?? nil)!)"
+                if self.ageLabel != nil {
+                    self.ageLabel.text = ages
+                }
+            }
+            
+        }
+        catch{}
+        do {
+            let bloodT = try healthKitStore.bloodType()
+            switch bloodT.bloodType.rawValue {
+            case 1: blood = "A+"
+            case 2: blood = "A-"
+            case 3: blood = "B+"
+            case 4: blood = "B-"
+            case 5: blood = "AB+"
+            case 6: blood = "AB-"
+            case 7: blood = "0+"
+            case 8: blood = "0-"
+            default:
+                blood = ""
+            }
+            DispatchQueue.main.async {
+                if self.bloodLable != nil{
+                    self.bloodLable.text = blood
+                }
+                
+                
+            }
+        }
+        catch{}
         
     }
     
-    @IBAction func updateButtonClicked(_ sender: UIButton) {
-        self.requestHealthAuthorization()
-    }
     func writeToKit(){
         let weight = Double(self.weightTextField.text!)
         let today = NSDate()
@@ -80,90 +207,18 @@ class ViewController: UIViewController {
         }
     }
     
-    func requestHealthAuthorization() {
-        print("Requesting HealthKit authorization...")
-      
-        if !HKHealthStore.isHealthDataAvailable() {
-            presentHealthDataNotAvailableError()
-            return
-        }
-        
+    //-Kullanılmayan kısım
     
-        healthStore.requestAuthorization(toShare: shareTypes, read: readTypes) { (success, error) in
-            var status: String = ""
-            
-            if let error = error {
-                status = "HealthKit Authorization Error: \(error.localizedDescription)"
-            } else {
-                if success {
-                    if self.hasRequestedHealthData {
-                        status = "You've already requested access to health data. "
-                    } else {
-                        status = "HealthKit authorization request was successful! "
-                    }
-                    
-                    status += self.createAuthorizationStatusDescription(for: self.shareTypes)
-                    
-                    self.hasRequestedHealthData = true
-                } else {
-                    status = "HealthKit authorization did not complete successfully."
-                }
-            }
-            
-            print(status)
-            
-            // Results come back on a background thread. Dispatch UI updates to the main thread.
-            DispatchQueue.main.async {
-                self.descriptionLabel.text = status
-            }
-        }
+    private func presentHealthDataNotAvailableError() {
+        let title = "Health Data Unavailable"
+        let message = "Aw, shucks! We are unable to access health data on this device. Make sure you are using device with HealthKit capabilities."
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "Dismiss", style: .default)
         
+        alertController.addAction(action)
         
-        
-        
-        
-        
-        
-        
+        present(alertController, animated: true)
     }
-    
-
-    func getHealthAuthorizationRequestStatus() {
-        print("Checking HealthKit authorization status...")
-        
-        if !HKHealthStore.isHealthDataAvailable() {
-            presentHealthDataNotAvailableError()
-            
-            return
-        }
-        
-        healthStore.getRequestStatusForAuthorization(toShare: shareTypes, read: readTypes) { (authorizationRequestStatus, error) in
-            
-            var status: String = ""
-            if let error = error {
-                status = "HealthKit Authorization Error: \(error.localizedDescription)"
-            } else {
-                switch authorizationRequestStatus {
-                case .shouldRequest:
-                    self.hasRequestedHealthData = false
-                    
-                    status = "The application has not yet requested authorization for all of the specified data types."
-                case .unknown:
-                    status = "The authorization request status could not be determined because an error occurred."
-                case .unnecessary:
-                    self.hasRequestedHealthData = true
-                    
-                    status = "The application has already requested authorization for the specified data types. "
-                    status += self.createAuthorizationStatusDescription(for: self.shareTypes)
-                default:
-                    break
-                }
-            }
-            print(status)
-
-        }
-    }
-    
     
     
     private func createAuthorizationStatusDescription(for types: Set<HKObjectType>) -> String {
@@ -209,194 +264,81 @@ class ViewController: UIViewController {
         
         return description
     }
-
-    func authorizeHealthKitinApp(){
-        let healhKitTypesToRead : Set <HKObjectType> = [HKObjectType.characteristicType(forIdentifier: HKCharacteristicTypeIdentifier.biologicalSex)!,HKObjectType.characteristicType(forIdentifier: HKCharacteristicTypeIdentifier.dateOfBirth)!,
-                HKObjectType.characteristicType(forIdentifier: HKCharacteristicTypeIdentifier.bloodType)!,
-                                                           HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!,
-                                                           HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.height)!,]
-        let healthKitTypesToWrite : Set <HKSampleType> = [
-            HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!,HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.height)!]
-           
-           if !HKHealthStore.isHealthDataAvailable(){
-               print("Error occured")
-               authorizeHealthKitinApp()
-               return
-           }
-           healthKitStore.requestAuthorization(toShare: healthKitTypesToWrite, read: healhKitTypesToRead) { (success,error) in
+    
+    func getHealthAuthorizationRequestStatus() {
+        print("Checking HealthKit authorization status...")
+        
+        if !HKHealthStore.isHealthDataAvailable() {
+            presentHealthDataNotAvailableError()
+            
+            return
+        }
+        
+        healthStore.getRequestStatusForAuthorization(toShare: shareTypes, read: readTypes) { (authorizationRequestStatus, error) in
+            
+            var status: String = ""
             if let error = error {
-                print("requestAuthorization error:", error.localizedDescription)
-                self.authorizeHealthKitinApp()
-        }
-        
-        if success {
-            print("HealthKit authorization request was successful!")
-            self.readProfile()
-        } else {
-            print("HealthKit authorization was not successful.")
-        }
-        
-    }
-        let authorizationStatusMass = healthStore.authorizationStatus(for: HKSampleType.quantityType(forIdentifier: .bodyMass)!)
-        if authorizationStatusMass == .notDetermined {
-            weightLabel.isHidden = true
-        } else if authorizationStatusMass == .sharingDenied {
-           print( "Meditations doesn't have access to your bodymass data. You can enable access in the Settings application.")
-        }
-        let authorizationStatusHeight = healthStore.authorizationStatus(for: HKSampleType.quantityType(forIdentifier: .height)!)
-        if authorizationStatusHeight == .notDetermined {
-            weightLabel.isHidden = true
-        } else if authorizationStatusHeight == .sharingDenied {
-           print( "Meditations doesn't have access to your Height data. You can enable access in the Settings application.")
-        }
-        
-        
-        
-        
-       }
-    
-    
-    /*
-     class func requestHealthDataAccessIfNeeded(toShare shareTypes: Set<HKSampleType>?,
-                                                read readTypes: Set<HKObjectType>?,
-                                                completion: @escaping (_ success: Bool) -> Void) {
-         if !HKHealthStore.isHealthDataAvailable() {
-             fatalError("Health data is not available!")
-         }
-         
-         print("Requesting HealthKit authorization...")
-         healthStore.requestAuthorization(toShare: shareTypes, read: readTypes) { (success, error) in
-             if let error = error {
-                 print("requestAuthorization error:", error.localizedDescription)
-             }
-             
-             if success {
-                 print("HealthKit authorization request was successful!")
-             } else {
-                 print("HealthKit authorization was not successful.")
-             }
-             
-             completion(success)
-         }
-     }
-   
-*/
-    
-    
-    func readProfile(){
-        var age:Int?
-        var weight : String = ""
-        var height : String = ""
-        var gender : String = ""
-        var blood : String = ""
-
-        do{
-            let birthday = try healthKitStore.dateOfBirthComponents()
-            let calendar = Calendar.current
-            let currentyear = calendar.component(.year, from: Date())
-            age = currentyear-birthday.year!
-            let query = HKSampleQuery(sampleType: bodyMassType, predicate: nil, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, results, error) in
-                if let result = results?.last as? HKQuantitySample {
-                    DispatchQueue.main.async {
-                        weight = "\(result.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo)))"
-                        if self.weightLabel != nil{
-                            self.weightLabel.text = weight
-                        }
-                        let ages = "\((age ?? nil)!)"
-                        
-                       if self.ageLabel != nil {
-                            self.ageLabel.text = ages
-                        }
-                        
-                        
-                        
-                    }
-                }
-            }
-            healthKitStore.execute(query)
-        }
-        catch{
-            
-        }
-        
-        do {
-            let biologicalSex = try healthKitStore.biologicalSex()
-            switch biologicalSex.biologicalSex.rawValue{
-                case 1:gender = "female"
-                case 2:gender = "male"
-                case 3:gender = "other"
-            default:
-                gender =  ""
-                
-            }
-    
-            let query = HKSampleQuery(sampleType: heightType, predicate: nil, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, results, error) in
-                if let result = results?.last as? HKQuantitySample{
+                status = "HealthKit Authorization Error: \(error.localizedDescription)"
+            } else {
+                switch authorizationRequestStatus {
+                case .shouldRequest:
+                    self.hasRequestedHealthData = false
                     
-                    print("Height => \(result.quantity)")
-                    DispatchQueue.main.async {
-                        if(self.heightLabel != nil){
-                            self.heightLabel.text = " \(result.quantity)"
-                        }
-
+                    status = "The application has not yet requested authorization for all of the specified data types."
+                case .unknown:
+                    status = "The authorization request status could not be determined because an error occurred."
+                case .unnecessary:
+                    self.hasRequestedHealthData = true
+                    
+                    status = "The application has already requested authorization for the specified data types. "
+                    status += self.createAuthorizationStatusDescription(for: self.shareTypes)
+                default:
+                    break
+                }
+            }
+            print(status)
+            
+        }
+    }
+    func requestHealthAuthorization() {
+        print("Requesting HealthKit authorization...")
+        
+        if !HKHealthStore.isHealthDataAvailable() {
+            presentHealthDataNotAvailableError()
+            return
+        }
+        
+        
+        healthStore.requestAuthorization(toShare: shareTypes, read: readTypes) { (success, error) in
+            var status: String = ""
+            
+            if let error = error {
+                status = "HealthKit Authorization Error: \(error.localizedDescription)"
+            } else {
+                if success {
+                    if self.hasRequestedHealthData {
+                        status = "You've already requested access to health data. "
+                    } else {
+                        status = "HealthKit authorization request was successful! "
                     }
-                }else{
-                    print("OOPS didnt get height \nResults => \(results), error => \(error)")
+                    
+                    status += self.createAuthorizationStatusDescription(for: self.shareTypes)
+                    
+                    self.hasRequestedHealthData = true
+                } else {
+                    status = "HealthKit authorization did not complete successfully."
                 }
             }
-            self.healthKitStore.execute(query)
-  
+            
+            print(status)
+            
+            // Results come back on a background thread. Dispatch UI updates to the main thread.
             DispatchQueue.main.async {
-                if self.sexLabel != nil{
-                    self.sexLabel.text = gender
-                }
-            
-
-            }
-
-        }
-        catch{
-            
-        }
-        do {
-            let bloodT = try healthKitStore.bloodType()
-            switch bloodT.bloodType.rawValue {
-            case 1: blood = "A+"
-            case 2: blood = "A-"
-            case 3: blood = "B+"
-            case 4: blood = "B-"
-            case 5: blood = "AB+"
-            case 6: blood = "AB-"
-            case 7: blood = "0+"
-            case 8: blood = "0-"
-            default:
-                blood = ""
-            }
-            DispatchQueue.main.async {
-                if self.bloodLable != nil{
-                    self.bloodLable.text = blood
-                }
-      
-
+                self.descriptionLabel.text = status
             }
         }
-        catch{
-            
-        }
-
+ 
     }
     
-    
-    
-    private func presentHealthDataNotAvailableError() {
-        let title = "Health Data Unavailable"
-        let message = "Aw, shucks! We are unable to access health data on this device. Make sure you are using device with HealthKit capabilities."
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Dismiss", style: .default)
-        
-        alertController.addAction(action)
-        
-        present(alertController, animated: true)
-    }
 }
 
