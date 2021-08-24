@@ -27,11 +27,11 @@ class ViewController: UIViewController {
     @IBOutlet weak var bloodLable: UILabel!
     @IBOutlet weak var weightLabel: UILabel!
     @IBOutlet weak var heightLabel: UILabel!
-  
+    
     
     @IBOutlet weak var weightTextField: UITextField!
     @IBOutlet weak var heightTextField: UITextField!
-
+    
     let user = User()
     let healthKitStore: HKHealthStore = HKHealthStore()
     let bodyMassType = HKSampleType.quantityType(forIdentifier: .bodyMass)!
@@ -41,16 +41,16 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         authorizeHealthKitinApp()
         
-        
     }
     @IBAction func saveButtonClicked(_ sender: Any) {
         writeToKit()
+        self.dismiss(animated: true, completion: nil)
     }
-
+    
     @IBAction func updateButtonClicked(_ sender: UIButton) {
         self.readProfile()
     }
-
+    
     func authorizeHealthKitinApp(){
         let healhKitTypesToRead : Set <HKObjectType> = [HKObjectType.characteristicType(forIdentifier: HKCharacteristicTypeIdentifier.biologicalSex)!,HKObjectType.characteristicType(forIdentifier: HKCharacteristicTypeIdentifier.dateOfBirth)!,
                                                         HKObjectType.characteristicType(forIdentifier: HKCharacteristicTypeIdentifier.bloodType)!,
@@ -82,18 +82,26 @@ class ViewController: UIViewController {
         if authorizationStatusMass == .notDetermined {
             weightLabel.isHidden = true
         } else if authorizationStatusMass == .sharingDenied {
-            print( "Meditations doesn't have access to your bodymass data. You can enable access in the Settings application.")
+            print( "App doesn't have access to your bodymass data. You can enable access in the Settings application.")
+            if self.weightLabel != nil {
+                weightLabel.text = ""
+            }
+            
         }
         let authorizationStatusHeight = healthStore.authorizationStatus(for: HKSampleType.quantityType(forIdentifier: .height)!)
         if authorizationStatusHeight == .notDetermined {
             weightLabel.isHidden = true
         } else if authorizationStatusHeight == .sharingDenied {
-            print( "Meditations doesn't have access to your Height data. You can enable access in the Settings application.")
+            print( "App doesn't have access to your Height data. You can enable access in the Settings application.")
+            if self.heightLabel != nil {
+                heightLabel.text = ""
+            }
+            
         }
-   
+        
     }
     
-
+    
     func readProfile(){
         var age:Int?
         var weight : String = ""
@@ -113,13 +121,22 @@ class ViewController: UIViewController {
                         if self.weightLabel != nil{
                             self.weightLabel.text = weight
                         }
-                        
+                        let ages = "\((age ?? nil)!)"
+                        if self.ageLabel != nil {
+                            self.ageLabel.text = ages
+                        }
                     }
                 }
             }
             healthKitStore.execute(query)
         }
-        catch{}
+        catch{
+            DispatchQueue.main.async {
+                if self.ageLabel != nil {
+                    self.ageLabel.text = ""
+                }
+            }
+        }
         
         do {
             let biologicalSex = try healthKitStore.biologicalSex()
@@ -149,27 +166,27 @@ class ViewController: UIViewController {
                 if self.sexLabel != nil{
                     self.sexLabel.text = gender
                 }
-                let ages = "\((age ?? nil)!)"
-                if self.ageLabel != nil {
-                    self.ageLabel.text = ages
-                }
+                
             }
             
         }
         catch{}
         do {
             let bloodT = try healthKitStore.bloodType()
-            switch bloodT.bloodType.rawValue {
-            case 1: blood = "A+"
-            case 2: blood = "A-"
-            case 3: blood = "B+"
-            case 4: blood = "B-"
-            case 5: blood = "AB+"
-            case 6: blood = "AB-"
-            case 7: blood = "0+"
-            case 8: blood = "0-"
+            print(bloodT.bloodType.rawValue)
+            switch (bloodT.bloodType) {
+            case .aPositive: blood = "A+"
+            case .aNegative: blood = "A-"
+            case .bPositive: blood = "B+"
+            case .bNegative: blood = "B-"
+            case .abPositive: blood = "AB+"
+            case .abNegative: blood = "AB-"
+            case .oPositive: blood = "0+"
+            case .oNegative: blood = "0-"
+                
             default:
                 blood = ""
+                break
             }
             DispatchQueue.main.async {
                 if self.bloodLable != nil{
@@ -186,24 +203,31 @@ class ViewController: UIViewController {
     func writeToKit(){
         let weight = Double(self.weightTextField.text!)
         let today = NSDate()
-        if let type = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass){
-            let quantity = HKQuantity(unit:HKUnit.gram(),doubleValue:Double(weight!))
-            let sample = HKQuantitySample(type: type , quantity: quantity,start: today as Date,end: today as Date)
-            healthKitStore.save(sample) { (success, error) in
-                print("Saved \(success),error \(error)")
+        if (weight != nil){
+            if let type = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass){
+                let quantity = HKQuantity(unit:HKUnit.gram(),doubleValue:Double(weight!))
+                let sample = HKQuantitySample(type: type , quantity: quantity,start: today as Date,end: today as Date)
+                healthKitStore.save(sample) { (success, error) in
+                    print("Saved \(success),error \(error)")
+                }
             }
+            
         }
         
+        
         let height = Double(self.heightTextField.text!)
-        if let type = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.height) {
-            let quantity = HKQuantity(unit: HKUnit.inch(), doubleValue: height!)
-            let sample = HKQuantitySample(type: type, quantity: quantity, start: today as Date, end: today as Date)
+        if (height != nil){
+            if let type = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.height) {
+                let quantity = HKQuantity(unit: HKUnit.inch(), doubleValue: height!)
+                let sample = HKQuantitySample(type: type, quantity: quantity, start: today as Date, end: today as Date)
+                
+                self.healthKitStore.save(sample, withCompletion: { (success, error) in
+                    if success {
+                        print("YESSS")
+                    }
+                })
+            }
             
-            self.healthKitStore.save(sample, withCompletion: { (success, error) in
-                if success {
-                    print("YESSS")
-                }
-            })
         }
     }
     
@@ -337,7 +361,7 @@ class ViewController: UIViewController {
                 self.descriptionLabel.text = status
             }
         }
- 
+        
     }
     
 }
