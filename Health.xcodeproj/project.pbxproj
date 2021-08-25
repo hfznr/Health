@@ -13,11 +13,7 @@
 		8E153FF126CFACD5001DB0DC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E153FEF26CFACD5001DB0DC /* Main.storyboard */; };
 		8E153FF326CFACDE001DB0DC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E153FF226CFACDE001DB0DC /* Assets.xcassets */; };
 		8E153FFF26CFAD81001DB0DC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E153FFE26CFAD81001DB0DC /* User.swift */; };
-		8E15400226CFADA8001DB0DC /* HealthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E15400126CFADA8001DB0DC /* HealthData.swift */; };
 		8E15400926CFADDA001DB0DC /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E15400526CFADDA001DB0DC /* UIApplication+Extension.swift */; };
-		8E15400A26CFADDA001DB0DC /* HealthKitSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E15400626CFADDA001DB0DC /* HealthKitSupport.swift */; };
-		8E15400B26CFADDA001DB0DC /* HealthKitSupport+Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E15400726CFADDA001DB0DC /* HealthKitSupport+Strings.swift */; };
-		8E15400C26CFADDA001DB0DC /* CareKitSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E15400826CFADDA001DB0DC /* CareKitSupport.swift */; };
 		8E15401526CFB1FB001DB0DC /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E15401426CFB1FB001DB0DC /* HealthKit.framework */; };
 		8E15401826CFB288001DB0DC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E153FF426CFACDE001DB0DC /* LaunchScreen.storyboard */; };
 		8E15401C26CFD055001DB0DC /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 8E15401B26CFD055001DB0DC /* Localizable.stringsdict */; };
@@ -33,11 +29,7 @@
 		8E153FF526CFACDE001DB0DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8E153FF726CFACDE001DB0DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E153FFE26CFAD81001DB0DC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		8E15400126CFADA8001DB0DC /* HealthData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthData.swift; sourceTree = "<group>"; };
 		8E15400526CFADDA001DB0DC /* UIApplication+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
-		8E15400626CFADDA001DB0DC /* HealthKitSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitSupport.swift; sourceTree = "<group>"; };
-		8E15400726CFADDA001DB0DC /* HealthKitSupport+Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HealthKitSupport+Strings.swift"; sourceTree = "<group>"; };
-		8E15400826CFADDA001DB0DC /* CareKitSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CareKitSupport.swift; sourceTree = "<group>"; };
 		8E15401226CFB1FB001DB0DC /* Health.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Health.entitlements; sourceTree = "<group>"; };
 		8E15401426CFB1FB001DB0DC /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		8E15401B26CFD055001DB0DC /* Localizable.stringsdict */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = Localizable.stringsdict; path = Health/Localizable.stringsdict; sourceTree = "<group>"; };
@@ -94,9 +86,6 @@
 			isa = PBXGroup;
 			children = (
 				8E15400526CFADDA001DB0DC /* UIApplication+Extension.swift */,
-				8E15400626CFADDA001DB0DC /* HealthKitSupport.swift */,
-				8E15400726CFADDA001DB0DC /* HealthKitSupport+Strings.swift */,
-				8E15400826CFADDA001DB0DC /* CareKitSupport.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -112,7 +101,6 @@
 		8E15400F26CFB0C8001DB0DC /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				8E15400126CFADA8001DB0DC /* HealthData.swift */,
 				8E153FFE26CFAD81001DB0DC /* User.swift */,
 			);
 			path = Objects;
@@ -198,14 +186,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				8E153FFF26CFAD81001DB0DC /* User.swift in Sources */,
-				8E15400B26CFADDA001DB0DC /* HealthKitSupport+Strings.swift in Sources */,
-				8E15400226CFADA8001DB0DC /* HealthData.swift in Sources */,
 				8E153FEE26CFACD5001DB0DC /* ViewController.swift in Sources */,
 				8E153FEA26CFACD5001DB0DC /* AppDelegate.swift in Sources */,
-				8E15400A26CFADDA001DB0DC /* HealthKitSupport.swift in Sources */,
 				8E15400926CFADDA001DB0DC /* UIApplication+Extension.swift in Sources */,
 				8E153FEC26CFACD5001DB0DC /* SceneDelegate.swift in Sources */,
-				8E15400C26CFADDA001DB0DC /* CareKitSupport.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
