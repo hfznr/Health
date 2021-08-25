@@ -10,11 +10,6 @@ import HealthKit
 
 class ViewController: UIViewController {
     
-
-    
-   
-    
-    
     var hasRequestedHealthData: Bool = false
     @IBOutlet weak var sexLabel: UILabel?
     @IBOutlet weak var ageLabel: UILabel?
@@ -55,11 +50,6 @@ class ViewController: UIViewController {
             self.bloodLable?.text = self.user.getUserBlood()
         }
     }
-    
-    
-    
-    
+
 }
-    //-Kullanılmayan kısım
-    
-  
+

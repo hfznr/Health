@@ -53,8 +53,8 @@ class User: NSObject {
         self.userAge = readAge()
         self.userSex = readSex()
         self.userBlood = readBlood()
-        readWeight()
-        readHeight()
+        readSample(sampleType: HKObjectType.quantityType(forIdentifier: .bodyMass)!)
+        readSample(sampleType: HKObjectType.quantityType(forIdentifier: .height)!)
     }
     
     func readAge()->String?{
@@ -71,8 +71,6 @@ class User: NSObject {
         }
        
     }
-    
-    
     
     func readSex()->String?{
         var gender : String = ""
@@ -93,27 +91,18 @@ class User: NSObject {
 
         }
     
-    func readWeight(){
-        var weight : String = ""
-        let query = HKSampleQuery(sampleType: bodyMassType, predicate: nil, limit: HKObjectQueryNoLimit, sortDescriptors: nil)
-        { (query, results, error) in
-            if let result = results?.last as? HKQuantitySample {
-                weight = "\(result.quantity.doubleValue(for: HKUnit.gramUnit(with:.kilo)))"
-                self.userWeight = weight
-            }
-        }
-        healthKitStore.execute(query)
-        
-    }
-    
-    func readHeight(){
-        // tek fonk indirge
-        var height : String = ""
-        let query = HKSampleQuery(sampleType: heightType, predicate: nil, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, results, error) in
+
+ 
+    func readSample(sampleType:HKQuantityType){
+        let query = HKSampleQuery(sampleType: sampleType, predicate: nil, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, results, error) in
             if let result = results?.last as? HKQuantitySample{
-                height = " \(result.quantity.doubleValue(for: HKUnit.meter()) )"
-               
-                self.userHeight = height
+                if(sampleType == HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.height)){
+                    self.userHeight = " \(result.quantity.doubleValue(for: HKUnit.meter()) )"
+                }
+                else if(sampleType == HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)){
+                    self.userWeight = "\(result.quantity.doubleValue(for: HKUnit.gramUnit(with:.kilo)))"
+                }
+                
             }else{
                 print("OOPS didnt get height \nResults => \(results), error => \(error)")
             }
@@ -127,7 +116,6 @@ class User: NSObject {
         var blood : String = ""
         do {
             let bloodT = try healthKitStore.bloodType()
-            print(bloodT.bloodType.rawValue)
             switch (bloodT.bloodType) {
             case .aPositive: blood = "A+"
             case .aNegative: blood = "A-"
@@ -173,7 +161,7 @@ class User: NSObject {
         let today = NSDate()
         if checkAutorizationStatus(identifier: HKSampleType.quantityType(forIdentifier: .bodyMass)!){
             let weight = Double(weightText ?? "")
-            print ("w:\(weight)")
+
             if (weight != nil){
                 if let type = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass){
                     let quantity = HKQuantity(unit:HKUnit.gram(),doubleValue:Double(weight!))
@@ -191,7 +179,6 @@ class User: NSObject {
         
         if checkAutorizationStatus(identifier: HKSampleType.quantityType(forIdentifier: .height)!){
             let height = Double(heightText ?? "")
-            print("h:\(heightText)")
             if (height != nil){
                 if let type = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.height) {
                     let quantity = HKQuantity(unit: HKUnit.inch(), doubleValue: height!)
@@ -223,4 +210,22 @@ class User: NSObject {
     func getUserHeight()->String?{
         return self.userHeight
     }
+    
+    
+    
+    //    func readWeight(){
+    //        var weight : String = ""
+    //        let query = HKSampleQuery(sampleType: bodyMassType, predicate: nil, limit: HKObjectQueryNoLimit, sortDescriptors: nil)
+    //        { (query, results, error) in
+    //            if let result = results?.last as? HKQuantitySample {
+    //                weight = "\(result.quantity.doubleValue(for: HKUnit.gramUnit(with:.kilo)))"
+    //                self.userWeight = weight
+    //            }
+    //        }
+    //        healthKitStore.execute(query)
+    //
+    //    }
+    //
 }
+
+
