@@ -16,6 +16,7 @@
 		8E15401526CFB1FB001DB0DC /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E15401426CFB1FB001DB0DC /* HealthKit.framework */; };
 		8E15401826CFB288001DB0DC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E153FF426CFACDE001DB0DC /* LaunchScreen.storyboard */; };
 		8E15401C26CFD055001DB0DC /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 8E15401B26CFD055001DB0DC /* Localizable.stringsdict */; };
+		8EC6A18426D67DA500FC96E1 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC6A18326D67DA500FC96E1 /* SecondViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		8E15401226CFB1FB001DB0DC /* Health.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Health.entitlements; sourceTree = "<group>"; };
 		8E15401426CFB1FB001DB0DC /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		8E15401B26CFD055001DB0DC /* Localizable.stringsdict */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = Localizable.stringsdict; path = Health/Localizable.stringsdict; sourceTree = "<group>"; };
+		8EC6A18326D67DA500FC96E1 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				8E153FED26CFACD5001DB0DC /* ViewController.swift */,
+				8EC6A18326D67DA500FC96E1 /* SecondViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -185,6 +188,7 @@
 				8E153FFF26CFAD81001DB0DC /* User.swift in Sources */,
 				8E153FEE26CFACD5001DB0DC /* ViewController.swift in Sources */,
 				8E153FEA26CFACD5001DB0DC /* AppDelegate.swift in Sources */,
+				8EC6A18426D67DA500FC96E1 /* SecondViewController.swift in Sources */,
 				8E153FEC26CFACD5001DB0DC /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

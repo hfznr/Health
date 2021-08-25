@@ -23,21 +23,26 @@ class ViewController: UIViewController {
     
     let user = User()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         user.authorizeHealthKitinApp()
         readUserInfo()
         
     }
-    @IBAction func saveButtonClicked(_ sender: Any) {
-        
-        user.writeToKit(weightText:self.weightTextField?.text!, heightText: self.heightTextField?.text!)
-        self.dismiss(animated: true, completion: nil)
+    
+    
+    @IBAction func setData(_ sender: Any) {
+        self.performSegue(withIdentifier: "secondPage", sender: self)
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier  == "secondPage" {
+            let destination = segue.destination as! SecondViewController
+            destination.user =  self.user
+        }
     }
     
     @IBAction func updateButtonClicked(_ sender: UIButton) {
-       readUserInfo()
+        readUserInfo()
     }
     
     func readUserInfo(){
@@ -50,6 +55,5 @@ class ViewController: UIViewController {
             self.bloodLable?.text = self.user.getUserBlood()
         }
     }
-
 }
 

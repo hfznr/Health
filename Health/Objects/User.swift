@@ -8,13 +8,21 @@
 import UIKit
 import HealthKit
 
-class User: NSObject {
-    private var userAge : String? = ""
-    private var userBlood : String? = ""
-    private var userSex : String? = ""
-    private var userHeight : String? = ""
-    private var userWeight : String? = ""
-    
+protocol Users {
+    var userAge : String? { get }
+    var userBlood : String? {get}
+    var userSex : String?{get}
+    var userHeight : String?{get}
+    var userWeight : String?{get}
+}
+
+class User: Users {
+    internal var userAge : String? = ""
+    internal var userBlood : String? = ""
+    internal var userSex : String? = ""
+    internal var userHeight : String? = ""
+    internal var userWeight : String? = ""
+
     let healthKitStore: HKHealthStore = HKHealthStore()
     let bodyMassType = HKSampleType.quantityType(forIdentifier: .bodyMass)!
     let heightType = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.height)!
@@ -75,7 +83,7 @@ class User: NSObject {
     func readSex()->String?{
         var gender : String = ""
         do {
-            let biologicalSex = try healthKitStore.biologicalSex() // try ?
+            let biologicalSex = try healthKitStore.biologicalSex() 
             switch biologicalSex.biologicalSex.rawValue{
             case 1:gender = "female"
             case 2:gender = "male"
@@ -92,7 +100,8 @@ class User: NSObject {
         }
     
 
- 
+ //generic func
+    
     func readSample(sampleType:HKQuantityType){
         let query = HKSampleQuery(sampleType: sampleType, predicate: nil, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, results, error) in
             if let result = results?.last as? HKQuantitySample{
@@ -108,8 +117,7 @@ class User: NSObject {
             }
         }
         self.healthKitStore.execute(query)
-    
-        
+
     }
     
     func readBlood()->String?{

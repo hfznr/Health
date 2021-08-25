@@ -183,7 +183,8 @@
                                             </attributedString>
                                         </state>
                                         <connections>
-                                            <segue destination="yO6-SL-Utv" kind="show" id="Oxc-AZ-axZ"/>
+                                            <action selector="setData:" destination="BYZ-38-t0r" eventType="touchUpInside" id="M1x-uW-qRn"/>
+                                            <segue destination="yO6-SL-Utv" kind="show" identifier="secondPage" id="Oxc-AZ-axZ"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lQZ-zN-B45">
@@ -250,6 +251,7 @@
                                 </constraints>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="d9n-yn-ZIp"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="C7N-1h-kQJ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="1kJ-pY-vAu"/>
@@ -271,10 +273,10 @@
             </objects>
             <point key="canvasLocation" x="20" y="77.811094452773617"/>
         </scene>
-        <!--View Controller-->
+        <!--Second View Controller-->
         <scene sceneID="qBC-Bg-nBx">
             <objects>
-                <viewController id="yO6-SL-Utv" customClass="ViewController" customModule="Health" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="yO6-SL-Utv" customClass="SecondViewController" customModule="Health" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qg5-VA-lXi">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -380,17 +382,18 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="25" id="rRK-JR-8iI"/>
                                     <constraint firstAttribute="width" constant="200" id="vqa-x7-2tm"/>
                                 </constraints>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="l2r-jH-oyS">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="-" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="l2r-jH-oyS">
                                 <rect key="frame" x="160" y="363" width="200" height="25"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="2cY-aa-ieB"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="TCl-3B-qZX"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="25" id="gWO-OM-3d4"/>
                                     <constraint firstAttribute="height" constant="25" id="r8F-jo-6MG"/>
                                 </constraints>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
@@ -415,7 +418,7 @@
                                     </attributedString>
                                 </state>
                                 <connections>
-                                    <action selector="saveButtonClicked:" destination="yO6-SL-Utv" eventType="touchUpInside" id="yzI-ZN-5lI"/>
+                                    <action selector="saveButtonClicked:" destination="yO6-SL-Utv" eventType="touchUpInside" id="sje-8N-q8w"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -425,6 +428,7 @@
                             <constraint firstItem="BwP-l5-je8" firstAttribute="leading" secondItem="Bx3-Ek-dY9" secondAttribute="leading" constant="40" id="0jz-hS-msw"/>
                             <constraint firstItem="YRq-ug-smi" firstAttribute="centerX" secondItem="Bx3-Ek-dY9" secondAttribute="centerX" id="16V-40-qpH"/>
                             <constraint firstItem="Bx3-Ek-dY9" firstAttribute="trailing" secondItem="PKi-F4-4D8" secondAttribute="trailing" constant="15" id="4ZY-oF-Ifl"/>
+                            <constraint firstItem="Bx3-Ek-dY9" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="BwP-l5-je8" secondAttribute="trailing" symbolic="YES" id="4dG-9f-FyQ"/>
                             <constraint firstItem="KVf-67-5c5" firstAttribute="leading" secondItem="Bx3-Ek-dY9" secondAttribute="leading" constant="40" id="7uN-kF-6YO"/>
                             <constraint firstItem="YRq-ug-smi" firstAttribute="trailing" secondItem="Bx3-Ek-dY9" secondAttribute="trailing" id="8EO-iP-5sS"/>
                             <constraint firstItem="PKi-F4-4D8" firstAttribute="top" secondItem="BwP-l5-je8" secondAttribute="bottom" id="9xZ-bk-OSr"/>
@@ -439,6 +443,7 @@
                             <constraint firstAttribute="trailing" secondItem="kB4-HY-eYh" secondAttribute="trailing" constant="15" id="LYx-Gk-KXH"/>
                             <constraint firstAttribute="trailing" secondItem="HHQ-Ov-oDL" secondAttribute="trailing" constant="15" id="Ld4-pQ-oVR"/>
                             <constraint firstItem="j8C-vn-dba" firstAttribute="leading" secondItem="Bx3-Ek-dY9" secondAttribute="leading" constant="40" id="MXL-wo-QGW"/>
+                            <constraint firstItem="Bx3-Ek-dY9" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="j8C-vn-dba" secondAttribute="trailing" symbolic="YES" id="QVN-wF-NhQ"/>
                             <constraint firstItem="LKa-rR-R12" firstAttribute="leading" secondItem="Bx3-Ek-dY9" secondAttribute="leading" constant="40" id="Snr-o3-iK7"/>
                             <constraint firstItem="t09-t1-hrm" firstAttribute="leading" secondItem="Bx3-Ek-dY9" secondAttribute="leading" constant="40" id="T77-kx-no7"/>
                             <constraint firstItem="j8C-vn-dba" firstAttribute="top" secondItem="LKa-rR-R12" secondAttribute="bottom" constant="30" id="X0Q-Z5-7vJ"/>
@@ -458,13 +463,14 @@
                             <constraint firstItem="Ko8-hw-1GF" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="t09-t1-hrm" secondAttribute="trailing" constant="8" symbolic="YES" id="sdm-UT-k4A"/>
                             <constraint firstItem="lDH-nu-381" firstAttribute="top" secondItem="t09-t1-hrm" secondAttribute="bottom" id="uVY-tW-ydQ"/>
                             <constraint firstItem="kB4-HY-eYh" firstAttribute="top" secondItem="j8C-vn-dba" secondAttribute="bottom" id="vkH-HQ-ktF"/>
+                            <constraint firstItem="Bx3-Ek-dY9" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="LKa-rR-R12" secondAttribute="trailing" symbolic="YES" id="wpl-UY-NjH"/>
                             <constraint firstItem="d6X-3e-zs1" firstAttribute="centerX" secondItem="Bx3-Ek-dY9" secondAttribute="centerX" id="zhe-7l-EuO"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="EjO-X0-h1u"/>
                     <connections>
-                        <outlet property="heightTextField" destination="l2r-jH-oyS" id="Hip-Eo-QPF"/>
-                        <outlet property="weightTextField" destination="Ko8-hw-1GF" id="Z3k-ey-fjQ"/>
+                        <outlet property="heightTextField" destination="l2r-jH-oyS" id="kcf-rd-8QH"/>
+                        <outlet property="weightTextField" destination="Ko8-hw-1GF" id="CxD-xA-ep1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hkk-Pl-eFG" sceneMemberID="firstResponder"/>
